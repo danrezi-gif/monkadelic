@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Monkadelic — Generative Art · Electronic Music · Consciousness</title>
+    <meta name="description" content="Monkadelic is the creative practice of Daniel Rezinovsky — generative art, electronic music, VR, painting, and consciousness exploration.">
+    <meta property="og:title" content="Monkadelic">
+    <meta property="og:description" content="Generative art · electronic music · consciousness">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://monkadelic.me">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0908;
+            --bg-subtle: #12110f;
+            --text: #e2dbd0;
+            --text-dim: #a09888;
+            --text-bright: #f2ece3;
+            --accent: #c4956a;
+            --accent-dim: #8b6a4a;
+            --border: #2a2622;
+            --serif: 'Cormorant Garamond', Georgia, serif;
+            --mono: 'JetBrains Mono', monospace;
+        }
+
+```
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    html {
+        scroll-behavior: smooth;
+        background: #0a0908;
+    }
+
+    body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: var(--serif);
+        font-weight: 400;
+        line-height: 1.7;
+        font-size: 18px;
+        overflow-x: hidden;
+        min-height: 100vh;
+    }
+
+    /* Grain overlay */
+    body::after {
+        content: '';
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        pointer-events: none;
+        opacity: 0.03;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        z-index: 9999;
+    }
+
+    a {
+        color: var(--accent);
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    a:hover {
+        color: var(--text-bright);
+    }
+
+    /* --- HERO --- */
+    .hero {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 2rem;
+        position: relative;
+    }
+
+    .hero::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(ellipse, rgba(196, 149, 106, 0.06) 0%, transparent 70%);
+        border-radius: 50%;
+        pointer-events: none;
+    }
+
+    .hero-title {
+        font-family: var(--serif);
+        font-size: clamp(3rem, 8vw, 7rem);
+        font-weight: 300;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--text-bright);
+        margin-bottom: 1.5rem;
+        opacity: 0;
+        animation: fadeUp 1.2s ease forwards;
+    }
+
+    .hero-sub {
+        font-family: var(--mono);
+        font-size: 0.75rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        margin-bottom: 3rem;
+        opacity: 0;
+        animation: fadeUp 1.2s ease 0.3s forwards;
+    }
+
+    .hero-line {
+        width: 1px;
+        height: 80px;
+        background: linear-gradient(to bottom, transparent, var(--accent-dim), transparent);
+        opacity: 0;
+        animation: fadeUp 1.2s ease 0.6s forwards;
+    }
+
+    .hero-nav {
+        margin-top: 3rem;
+        display: flex;
+        gap: 2.5rem;
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        opacity: 0;
+        animation: fadeUp 1.2s ease 0.9s forwards;
+    }
+
+    .hero-nav a {
+        color: var(--text-dim);
+        position: relative;
+    }
+
+    .hero-nav a::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: var(--accent);
+        transition: width 0.3s ease;
+    }
+
+    .hero-nav a:hover {
+        color: var(--text);
+    }
+
+    .hero-nav a:hover::after {
+        width: 100%;
+    }
+
+    @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* --- SECTIONS --- */
+    section {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 6rem 2rem;
+    }
+
+    .section-label {
+        font-family: var(--mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.35em;
+        text-transform: uppercase;
+        color: var(--accent-dim);
+        margin-bottom: 3rem;
+    }
+
+    .section-divider {
+        width: 100%;
+        height: 1px;
+        background: var(--border);
+        max-width: 900px;
+        margin: 0 auto;
+    }
+
+    /* --- ABOUT --- */
+    .about-text {
+        font-size: 1.15rem;
+        line-height: 1.85;
+        color: var(--text-bright);
+        max-width: 700px;
+        font-weight: 400;
+    }
+
+    .about-text p {
+        margin-bottom: 1.5rem;
+    }
+
+    .about-text em {
+        color: var(--accent);
+        font-style: italic;
+    }
+
+    .about-credentials {
+        margin-top: 3rem;
+        font-family: var(--mono);
+        font-size: 0.72rem;
+        line-height: 2.2;
+        color: var(--text);
+    }
+
+    /* --- WORK --- */
+    .work-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 2px;
+        margin-top: 2rem;
+    }
+
+    .work-item {
+        aspect-ratio: 1;
+        background: var(--bg-subtle);
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+    }
+
+    .work-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease, opacity 0.3s ease;
+    }
+
+    .work-item:hover img {
+        transform: scale(1.05);
+        opacity: 0.7;
+    }
+
+    .work-item-label {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 1.5rem 1rem;
+        background: linear-gradient(to top, rgba(10,9,8,0.9), transparent);
+        font-family: var(--mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        transform: translateY(100%);
+        transition: transform 0.3s ease;
+    }
+
+    .work-item:hover .work-item-label {
+        transform: translateY(0);
+    }
+
+    .work-placeholder {
+        aspect-ratio: 1;
+        background: var(--bg-subtle);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--mono);
+        font-size: 0.65rem;
+        color: var(--text-dim);
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        border: 1px dashed var(--border);
+    }
+
+    .work-categories {
+        margin-top: 3rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .work-cat {
+        font-family: var(--mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        padding: 0.5rem 1rem;
+        border: 1px solid var(--border);
+        transition: all 0.3s ease;
+    }
+
+    .work-cat:hover {
+        border-color: var(--accent-dim);
+        color: var(--accent);
+    }
+
+    /* --- WORKSHOPS --- */
+    .workshop-card {
+        border: 1px solid var(--border);
+        padding: 2.5rem;
+        margin-top: 2rem;
+        position: relative;
+    }
+
+    .workshop-card::before {
+        content: 'em breve';
+        position: absolute;
+        top: -0.6rem;
+        left: 2rem;
+        background: var(--bg);
+        padding: 0 0.8rem;
+        font-family: var(--mono);
+        font-size: 0.6rem;
+        letter-spacing: 0.25em;
+        text-transform: uppercase;
+        color: var(--accent);
+    }
+
+    .workshop-title {
+        font-family: var(--serif);
+        font-size: 1.6rem;
+        font-weight: 400;
+        color: var(--text-bright);
+        margin-bottom: 1rem;
+    }
+
+    .workshop-desc {
+        color: var(--text);
+        font-size: 1rem;
+        line-height: 1.8;
+        margin-bottom: 2rem;
+    }
+
+    .workshop-signup {
+        display: inline-block;
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--accent);
+        border: 1px solid var(--accent-dim);
+        padding: 0.8rem 2rem;
+        transition: all 0.3s ease;
+    }
+
+    .workshop-signup:hover {
+        background: var(--accent);
+        color: var(--bg);
+        border-color: var(--accent);
+    }
+
+    /* --- LISTEN --- */
+    .listen-links {
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+        margin-top: 2rem;
+    }
+
+    .listen-link {
+        display: flex;
+        align-items: center;
+        gap: 1.5rem;
+        padding: 1.2rem 0;
+        border-bottom: 1px solid var(--border);
+        transition: padding-left 0.3s ease;
+    }
+
+    .listen-link:hover {
+        padding-left: 1rem;
+    }
+
+    .listen-link-name {
+        font-family: var(--serif);
+        font-size: 1.2rem;
+        color: var(--text-bright);
+    }
+
+    .listen-link-sub {
+        font-family: var(--mono);
+        font-size: 0.65rem;
+        color: var(--text-dim);
+        letter-spacing: 0.1em;
+    }
+
+    /* --- CONTACT --- */
+    .contact-text {
+        font-size: 1.1rem;
+        line-height: 1.8;
+        color: var(--text);
+        margin-bottom: 2rem;
+    }
+
+    .contact-email {
+        font-family: var(--mono);
+        font-size: 1rem;
+        letter-spacing: 0.05em;
+    }
+
+    .contact-social {
+        margin-top: 3rem;
+        display: flex;
+        gap: 2rem;
+        font-family: var(--mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+    }
+
+    /* --- FOOTER --- */
+    footer {
+        text-align: center;
+        padding: 4rem 2rem;
+        font-family: var(--mono);
+        font-size: 0.6rem;
+        letter-spacing: 0.2em;
+        color: var(--text-dim);
+        opacity: 0.5;
+    }
+
+    /* --- RESPONSIVE --- */
+    @media (max-width: 600px) {
+        .hero-nav {
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .work-grid {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        section {
+            padding: 4rem 1.5rem;
+        }
+
+        .contact-social {
+            flex-direction: column;
+            gap: 1rem;
+        }
+    }
+</style>
+```
+
+</head>
+<body>
+
+```
+<!-- HERO -->
+<div class="hero">
+    <h1 class="hero-title">Monkadelic</h1>
+    <p class="hero-sub">Generative art · electronic music · consciousness</p>
+    <div class="hero-line"></div>
+    <nav class="hero-nav">
+        <a href="#work">Work</a>
+        <a href="#about">About</a>
+        <a href="#listen">Listen</a>
+        <a href="#workshops">Workshops</a>
+        <a href="#contact">Contact</a>
+    </nav>
+</div>
+
+<!-- WORK -->
+<div class="section-divider"></div>
+<section id="work">
+    <div class="section-label">Selected Work</div>
+    <div class="work-grid">
+        <div class="work-placeholder">Add image</div>
+        <div class="work-placeholder">Add image</div>
+        <div class="work-placeholder">Add image</div>
+        <div class="work-placeholder">Add image</div>
+        <div class="work-placeholder">Add image</div>
+        <div class="work-placeholder">Add image</div>
+    </div>
+    <div class="work-categories">
+        <span class="work-cat">Generative</span>
+        <span class="work-cat">Painting</span>
+        <span class="work-cat">Audio-reactive</span>
+        <span class="work-cat">VR / Immersive</span>
+        <span class="work-cat">Photography</span>
+        <span class="work-cat">AI / LoRA</span>
+    </div>
+</section>
+
+<!-- ABOUT -->
+<div class="section-divider"></div>
+<section id="about">
+    <div class="section-label">About</div>
+    <div class="about-text">
+        <p>Monkadelic is the creative practice of <em>Daniel Rezinovsky</em> — an Argentinian-Brazilian artist, electronic musician, and consciousness researcher working at the intersection of art, technology, and inner experience.</p>
+        <p>His work spans generative and algorithmic art, abstract painting, immersive VR environments, audio-reactive visuals, and electronic music production. Central to the practice is a sustained inquiry into the nature of consciousness — informed by over twelve years of clinical psychology, contemplative traditions, and psychedelic integration work.</p>
+        <p>Current projects include <em>Theosis Project</em> (electronic music), <em>Ontik</em> and <em>Encontro</em> (immersive VR experiences), and <em>Entrementes</em> — a community and workshop platform for neurodivergent creatives, artists, and therapists exploring new modes of expression and learning.</p>
+        <p>He works with TouchDesigner, p5.js, GLSL shaders, Eurorack synthesis, AI-driven image and video generation, and traditional painting. Based between Brazil and the world.</p>
+    </div>
+    <div class="about-credentials">
+        Author, <em>Encontro com o Absoluto</em> (2018)<br>
+        MEQ30 validation — Brazilian Portuguese<br>
+        PhD candidate, Religious Studies — Rice University<br>
+        Clinical psychologist — 12+ years<br>
+    </div>
+</section>
+
+<!-- LISTEN -->
+<div class="section-divider"></div>
+<section id="listen">
+    <div class="section-label">Listen</div>
+    <div class="listen-links">
+        <a href="#" class="listen-link">
+            <div>
+                <div class="listen-link-name">Theosis Project</div>
+                <div class="listen-link-sub">Electronic music · Bandcamp</div>
+            </div>
+        </a>
+        <a href="#" class="listen-link">
+            <div>
+                <div class="listen-link-name">YouTube</div>
+                <div class="listen-link-sub">Visuals · process · experiments</div>
+            </div>
+        </a>
+        <a href="#" class="listen-link">
+            <div>
+                <div class="listen-link-name">Instagram</div>
+                <div class="listen-link-sub">@monkadelic_</div>
+            </div>
+        </a>
+    </div>
+</section>
+
+<!-- WORKSHOPS -->
+<div class="section-divider"></div>
+<section id="workshops">
+    <div class="section-label">Workshops · Entrementes</div>
+    <div class="workshop-card">
+        <div class="workshop-title">IA para criativos neurodivergentes</div>
+        <div class="workshop-desc">
+            A workshop for neurodivergent creatives, artists, and therapists exploring AI as a cognitive and creative tool. Portuguese-language, online cohort format. Built from twelve years of clinical practice with neurodivergent minds and a daily creative practice using AI, creative coding, and generative art.
+        </div>
+        <a href="#" class="workshop-signup">Join the waitlist</a>
+    </div>
+    <div class="workshop-card" style="margin-top: 2rem;">
+        <div class="workshop-title">Integração e criatividade</div>
+        <div class="workshop-desc">
+            Psychedelic integration through creative practice. Combining clinical depth with art-making, contemplative techniques, and consciousness exploration. For individuals and facilitators.
+        </div>
+        <a href="#" class="workshop-signup">Join the waitlist</a>
+    </div>
+</section>
+
+<!-- CONTACT -->
+<div class="section-divider"></div>
+<section id="contact">
+    <div class="section-label">Contact</div>
+    <div class="contact-text">
+        For sessions, consulting, workshop inquiries, commissions, collaborations, and festival submissions.
+    </div>
+    <a href="mailto:hello@monkadelic.me" class="contact-email">hello@monkadelic.me</a>
+    <div class="contact-social">
+        <a href="#">Instagram</a>
+        <a href="#">YouTube</a>
+        <a href="#">Bandcamp</a>
+        <a href="#">GitHub</a>
+    </div>
+</section>
+
+<footer>
+    &copy; 2026 Monkadelic · Daniel Rezinovsky
+</footer>
+```
+
+</body>
+</html>
